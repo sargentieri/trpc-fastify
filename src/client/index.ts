@@ -9,17 +9,33 @@ async function start() {
 
   const trpc = createTRPCProxyClient<AppRouter>({
     transformer: superjson,
-    links: [httpBatchLink({ url: `http://${urlEnd}` })],
+    links: [
+      httpBatchLink({
+        url: `http://${urlEnd}`,
+        async headers() {
+          return {
+            username: 'nyan',
+          }
+        },
+      }),
+    ],
   })
 
   const version = await trpc.api.version.query()
-  console.log('>>> anon:version:', version)
+  console.log('>>> version:', version)
 
-  const hello = await trpc.api.hello.query()
-  console.log('>>> anon:hello:', hello)
+  await trpc.posts.create.mutate({ title: 'Title Alpha' })
+  await trpc.posts.create.mutate({ title: 'Title Bravo' })
+  await trpc.posts.create.mutate({ title: 'Title Charlie' })
+  console.log('>>> anon:creating...:')
 
   const postList = await trpc.posts.list.query()
-  console.log('>>> anon:posts:list:', postList)
+  console.log('>>> posts:list:', postList)
+
+  const postListWithArgs = await trpc.posts.list.query({
+    includes: ['id', 'title'],
+  })
+  console.log('>>> posts:list:args:', postListWithArgs)
 
   await trpc.posts.reset.mutate()
 }
