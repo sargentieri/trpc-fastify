@@ -15,11 +15,11 @@ async function start() {
   const version = await trpc.api.version.query()
   console.log('>>> anon:version:', version)
 
-  const hello = await trpc.api.hello.query()
-  console.log('>>> anon:hello:', hello)
+  const users = await trpc.users.list.query()
+  console.log('>>> users:', users)
 
   const postList = await trpc.posts.list.query()
-  console.log('>>> anon:posts:list:', postList)
+  console.log('>>> posts:list:', postList)
 
   await trpc.posts.reset.mutate()
 }

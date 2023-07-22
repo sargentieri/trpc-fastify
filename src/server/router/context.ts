@@ -1,14 +1,13 @@
-import { inferAsyncReturnType } from '@trpc/server';
-import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
+import { inferAsyncReturnType } from '@trpc/server'
+import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify'
+import prisma from '../lib/prisma'
 
 export interface User {
-  name: string[] | string;
+  name: string[] | string
 }
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
-  const user: User = { name: req.headers.username ?? 'anonymous' };
-
-  return { req, res, user };
+  return { req, res, prisma }
 }
 
-export type Context = inferAsyncReturnType<typeof createContext>;
+export type Context = inferAsyncReturnType<typeof createContext>

@@ -7,6 +7,12 @@
     "moduleResolution": "node",
     "noEmit": true
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "src/client",
+    "src/server",
+    "src/server/lib",
+    "src/server/prisma"
+  ],
   "exclude": ["node_modules"]
 }
